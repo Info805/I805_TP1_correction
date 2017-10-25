@@ -206,3 +206,49 @@ expression 	::= ENTIER:e                            {: RESULT = e ; :}
               | PAR_G expression:e PAR_D            {: RESULT = e ; :}
               ;
 ```
+
+#### Utilisation du numéro de ligne et de colonne et réécriture des messages d'erreur.
+Il est possible de demander à l'analyseur lexical (JFlex) de passer à l'analyseur syntaxique (CUP) 
+le numéro de ligne et de colonne dans le lexème.
+CUP les propage alors au niveau des règles de la grammaire, 
+ce qui permet des les utiliser dans les actions sémantiques et les messages d'erreur.
+
+__Passage numero de ligne et de colonne dans JFLEX :__
+
+```JFLEX
+/* ------------------------Section des Regles Lexicales----------------------*/
+"("			{ return new Symbol(sym.PAR_G, yyline, yycolumn) ;}
+")"			{ return new Symbol(sym.PAR_D, yyline, yycolumn) ;}
+"+"			{ return new Symbol(sym.PLUS, yyline, yycolumn) ;}
+...
+```
+
+__Utilisation dans CUP : ??left et ??right__
+
+```
+expr ::= expression:e SEMI:pv   {: if (! erreur) System.out.println("Ligne "+(pvleft+1)+", Colonne "+(pvright+1)+" : Eval = "+e); erreur = false; :}
+```
+
+__Réécriture du message d'erreur par défaut : __
+
+On peut aussi adapter la méthode utilisée pour rapporter les erreurs en redefinissant `report_error` :
+
+```
+parser code {:
+  // pour le parser (redefinition de la methode reportant les erreurs d'analyse)
+  public void report_error(String message, Object info) {
+    String m = "";
+    if (info instanceof java_cup.runtime.Symbol) {
+        Symbol s = ((Symbol) info);     
+        if (s != null && s.left >= 0 ) {
+            /* Ajoute le numero de ligne  et de colonne*/
+            m =  "Ligne " + (s.left+1) + ", Colonne " + (s.right+1) + " : ";
+            }
+        }
+    m = m + message;
+    System.err.println(m);
+    }
+:};
+```
+
+
