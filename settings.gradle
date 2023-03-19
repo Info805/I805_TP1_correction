@@ -8,6 +8,14 @@
  * in the user guide at https://docs.gradle.org/3.5/userguide/multi_project_builds.html
  */
 
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven {
+          url 'https://gitlab.com/api/v4/projects/35519225/packages/maven'
+        }
+    }
+}
 include 'Exercice1'
 include 'Exercice2'
 
