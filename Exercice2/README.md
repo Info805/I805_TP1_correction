@@ -3,7 +3,7 @@
 ## Ajout de la gestion des variables.
 
 ### Analyse lexicale
-Source pour l'analyseur lexical (JFlex) : *[src/main/jflex/AnalyseurLexical.flex](src/main/jflex/AnalyseurLexical.flex)*
+Source pour l'analyseur lexical (JFlex) : *[src/main/jflex/AnalyseurLexical.jflex](src/main/jflex/AnalyseurLexical.jflex)*
 
 Un identificateur doit commencer par une lettre et peut contenir des chiffres, des lettres et des underscores.
 

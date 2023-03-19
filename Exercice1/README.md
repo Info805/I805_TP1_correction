@@ -3,7 +3,7 @@
 ## Evaluateur d'expressions arithmétiques infixées sur les nombres entiers.
 
 ### Analyse lexicale
-Source pour l'analyseur lexical (JFlex) : *[src/main/jflex/AnalyseurLexical.flex](src/main/jflex/AnalyseurLexical.flex)*
+Source pour l'analyseur lexical (JFlex) : *[src/main/jflex/AnalyseurLexical.jflex](src/main/jflex/AnalyseurLexical.jflex)*
 
 On reconnait les différents mots du langage (lexème) : 
 - opérateurs arithmétiques : +, -, /, *
