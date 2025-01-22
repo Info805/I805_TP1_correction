@@ -11,7 +11,7 @@ import java_cup.runtime.Symbol;
 %line   // numerotation des lignes
 %column // numerotation caracteres par ligne
 
-// utilisation avec CUP 
+// utilisation avec CUP
 %cup
 
 // code a ajouter dans la classe produite
@@ -21,7 +21,7 @@ import java_cup.runtime.Symbol;
 
 /* definitions regulieres */
 
-chiffre     = [0-9]
+decimal     = [1-9][0-9]*
 espace      = \s
 mod         = "mod"|"MOD"
 let         = "let"|"LET"
@@ -29,9 +29,9 @@ let         = "let"|"LET"
 ident       = [:letter:]\w*
 comment1    = "//".*                            // commentaire uniligne
 comment2    = "/*"([^*]|("*"+[^/*]))*"*"+"/"    // commentaire multiligne
-comment     = {comment1}|{comment2}    
+comment     = {comment1}|{comment2}
 
-%% 
+%%
 /* ------------------------Section des Regles Lexicales----------------------*/
 
 /* regles */
@@ -46,7 +46,7 @@ comment     = {comment1}|{comment2}
 {mod}       { return new Symbol(sym.MOD, yyline, yycolumn) ;}
 "*"         { return new Symbol(sym.MUL, yyline, yycolumn) ;}
 ";"         { return new Symbol(sym.SEMI, yyline, yycolumn) ;}
-{chiffre}+  { return new Symbol(sym.ENTIER, yyline, yycolumn, Integer.valueOf(yytext())) ;}
+{decimal}  { return new Symbol(sym.ENTIER, yyline, yycolumn, Integer.valueOf(yytext())) ;}
 {ident}     { return new Symbol(sym.IDENT, yyline, yycolumn, yytext()) ;}
 {comment}   { /*commentaire : pas d'action*/ }
 {espace}    { /*espace : pas d'action*/ }
