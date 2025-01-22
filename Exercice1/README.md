@@ -1,6 +1,6 @@
 # Exercice 1
 
-## Evaluateur d'expressions arithmétiques infixées sur les nombres entiers.
+## Évaluateur d'expressions arithmétiques infixées sur les nombres entiers.
 
 ### Analyse lexicale
 Source pour l'analyseur lexical (JFlex) : *[src/main/jflex/AnalyseurLexical.jflex](src/main/jflex/AnalyseurLexical.jflex)*
@@ -8,7 +8,7 @@ Source pour l'analyseur lexical (JFlex) : *[src/main/jflex/AnalyseurLexical.jfle
 On reconnait les différents mots du langage (lexème) : 
 - opérateurs arithmétiques : +, -, /, *
 - les parenthèses ouvrantes et fermante : (, )
-- les entiers : [0-9]+
+- les entiers : `[1-9][0-9]*`
 - les espaces (espaces, tabulation, passage à la ligne) : \s
 - le lexème indiquant la fin d'une expression : ;
 
@@ -52,8 +52,8 @@ expression ::= ENTIER
 
 Les règles du genre : `expression ::= expression PLUS expression` introduisent des ambiguïtés dans la grammaire 
 (ce que n'aime pas l'analyseur). 
-Il faut dont lever ces ambiguïtés, soit en réécrivant les règles (cf. exemple donné en cours pour les expressions arithmétique), 
-soit précisant (comme le permet l'analyseur syntaxique) l'associativité et la priorité des opérateurs:
+Il faut dont lever ces ambiguïtés, soit en réécrivant les règles (cf. exemple donné en cours pour les expressions arithmétiques), 
+soit en précisant (comme le permet l'analyseur syntaxique) l'associativité et la priorité des opérateurs :
 
 ```
 precedence left PLUS, MOINS;
@@ -62,9 +62,9 @@ precedence left MUL, DIV;
 
 On liste les opérateurs du moins prioritaire au plus prioritaire.
 
-### Evaluation des expressions
+### Évaluation des expressions
 Pour l'évaluation des expressions, il faut aussi disposer des valeurs des entiers reconnus par l'analyseur lexical. 
-Avec JFlex et CUP cela peut se faire en passant un paramètre supplémentaire lors de la remonté du lexème par l'analyseur lexical :
+Avec JFlex et CUP cela peut se faire en passant un paramètre supplémentaire lors de la remontée du lexème par l'analyseur lexical :
 
 ```JFLEX
 {chiffre}+	{ return new Symbol(sym.ENTIER, new Integer(yytext())) ;}
@@ -86,11 +86,11 @@ Dans notre cas, on aura un entier associé
 - au symbole terminal (lexème) `ENTIER` - il est défini par l'analyzeur lexical - 
 - au symbole non terminal `expression`.
 
-Pour calculer les valeur associées au symboles non terminaux, on ajoute des actions sémantique dans les règles (valeur associée à `RESULT`) : 
+Pour calculer les valeurs associées aux symboles non terminaux, on ajoute des actions sémantique dans les règles (valeur associée à `RESULT`) :  
 `expression ::= expression:e1 PLUS expression:e2 {: RESULT = e1+e2 ; :} `
 
-On ajoute aussi une action semantique pour afficher la valeur finale de l'expression : 
-`expr ::= expression:e SEMI {: System.out.println("val: "+e); :}`
+On ajoute aussi une action sémantique pour afficher la valeur finale de l'expression :  
+`expr ::= expression:e SEMI {: System.out.println("Eval = "+e); :}`
 
 ```
 /* grammaire */
@@ -115,9 +115,9 @@ La règle `expr ::= error SEMI` permet de gérér les erreurs syntaxiques en dé
 après l'obtention d'un point virgule.
 
 ### Prise en compte du moins unaire
-Le moins unaire pose un problème particulier du fait qu'on utilise le même toket que pour l'opérateur binaire moins.
+Le moins unaire pose un problème particulier du fait qu'on utilise le même token que pour l'opérateur binaire moins.
 
-On peut se résoudre en ajoutant ue règle de priorité spécifique : 
+On peut le résoudre en ajoutant une règle de priorité spécifique : 
 
 ```
 precedence left PLUS, MOINS;
@@ -125,7 +125,7 @@ precedence left MUL, DIV;
 precedence left MOINS_UNAIRE;
 ```
 
-On précise ensuite au niveau de la règle de réécriture la priorité à utitilser :
+On précise ensuite au niveau de la règle de réécriture la priorité à utiliser :
 
 ```
 expression ::= ENTIER:e                            {: RESULT = e ; :}
@@ -135,12 +135,12 @@ expression ::= ENTIER:e                            {: RESULT = e ; :}
              ...
 ```
 
-#### Gestion des erreurs d'évaluation (division par zéro)
-Pour éviter que l'interpréteur s'arrête lors d'une erreur d'execution (division par zéro par exemple), 
+### Gestion des erreurs d'évaluation (division par zéro)
+Pour éviter que l'interpréteur ne s'arrête lors d'une erreur d'execution (division par zéro par exemple), 
 on peut tester si la valeur est différente de zéro avant d'effectuer l'opération. 
 Dans le cas contraire on suspend l'évaluation tant qu'on est pas arrivé à un point de reprise d'erreur (obtention d'un point virgule).
 
-À cette fin on peut ajouter un booléen dans la partie `action code` : 
+À cette fin, on peut ajouter un booléen dans la partie `action code` : 
 
 ```
 action code {: 
@@ -207,7 +207,7 @@ expression 	::= ENTIER:e                            {: RESULT = e ; :}
               ;
 ```
 
-#### Utilisation du numéro de ligne et de colonne et réécriture des messages d'erreur.
+### Utilisation du numéro de ligne et de colonne et réécriture des messages d'erreur.
 Il est possible de demander à l'analyseur lexical (JFlex) de passer à l'analyseur syntaxique (CUP) 
 le numéro de ligne et de colonne dans le lexème.
 CUP les propage alors au niveau des règles de la grammaire, 

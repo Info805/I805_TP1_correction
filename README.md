@@ -1,5 +1,5 @@
 # TP1 Compilation : Evaluateur d'expressions arithmétiques infixées
-On utilise JFlex pout l'analyseur lexical et CUP pour l'analyseur syntaxique.
+On utilise JFlex pour l'analyseur lexical et CUP pour l'analyseur syntaxique.
 
 **Sous Dossier [Exercice1](Exercice1) :**  
 Correction de l'exercice 1, évaluateur d'expressions arithmétiques infixées sur les nombres entiers.

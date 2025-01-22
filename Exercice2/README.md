@@ -11,7 +11,7 @@ Un identificateur doit commencer par une lettre et peut contenir des chiffres, d
 ident = [:letter:]\w*
 ```
 
-Ajout de la reconnaissance des token pour les variables : LET, EGAL , IDENT.
+Ajout de la reconnaissance des lexèmes pour les variables : `LET`, `EGAL` , `IDENT`.
 Dans le cas des identificateurs, on renvoie aussi la chaîne de caractères de l'identificateur.
 
 ```JFLEX
@@ -50,11 +50,11 @@ expression ::= IDENT
              | ...
 ```
 
-### Evaluation des expressions
+### Évaluation des expressions
 Pour la prise en compte des variables, l'analyseur lexical fait remonter avec le lexème IDENT, 
 la chaîne de caractères qui correspond au nom de la variable.
 
-Au niveau de CUP (analyseur syntaxique) on va devoir gérer les valeur des variables. 
+Au niveau de CUP (analyseur syntaxique) on va devoir gérer les valeurs des variables. 
 Une solution peut consister à utiliser une HashMap pour associer leurs valeurs aux noms des variables : 
 
 ```
